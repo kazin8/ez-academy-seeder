@@ -1,6 +1,8 @@
 <?php
 namespace App\Command;
 
+use App\Data\Academies\AcademyPackage;
+use App\Data\Academies\AcademySingle;
 use App\Data\PagesTypes\PageType;
 use App\Data\Themes\Theme;
 use App\Data\ThemesPagesTemplates\ThemePageTemplate;
@@ -13,6 +15,7 @@ class AcademySeedingCommand extends Command
     private $url = 'http://api.academy.ezf.develop/v1/';
     private $jwt = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJqdUs5US9ZY2NkcGR4OWtWR052YjB4Nkh2dzJOYW1BL3pnZTlIOERaZGNNPSIsImRhdGEiOnsidXNlcklkIjoiMGQ5YzA1OGUtZDdhZC00MjFkLTllNTgtNWU5YzdiYzJlZDRlIn19.B4ZemeTeAh4-sadIygozxiVbUQ3KA2U0Tu2m1-Di3-C4UIWwScs9yd_Ptg230e90vxrGOKPPaLYk8RJO7_Cxog';
     private $jwtDomain = 'api.academy.ezf.develop';
+    private $userId = '0d9c058e-d7ad-421d-9e58-5e9c7bc2ed4e';
     private $output;
 
     protected function configure()
@@ -29,6 +32,10 @@ class AcademySeedingCommand extends Command
         $theme = new Theme($this->url, $this->jwt, $this->jwtDomain);
         $pageType = new PageType($this->url, $this->jwt, $this->jwtDomain);
         $themePageTemplate = new ThemePageTemplate($this->url, $this->jwt, $this->jwtDomain);
+        $academySingle = new AcademySingle($this->url, $this->jwt, $this->jwtDomain);
+        $academySingle->setUserIdField($this->userId);
+        $academyPackage = new AcademyPackage($this->url, $this->jwt, $this->jwtDomain);
+        $academyPackage->setUserIdField($this->userId);
 
         $themes = [];
         $pagesTypes = [];
@@ -53,6 +60,16 @@ class AcademySeedingCommand extends Command
                 $themesPagesTemplates[] = $id;
                 $this->outputSuccess($themePageTemplate->getType(), $id);
             }
+
+            $academySingle->setTheme(['type' => $theme->getType(), 'id' => $themes[array_rand($themes)]]);
+            $academySingleId = $academySingle->create();
+            $this->outputSuccess($academySingle->getType().' single', $academySingleId);
+
+            $academyPackage->setTheme(['type' => $theme->getType(), 'id' => $themes[array_rand($themes)]]);
+            $academyPackageId = $academyPackage->create();
+            $this->outputSuccess($academyPackage->getType().' package', $academyPackageId);
+
+
 
         } catch (\Exception $e) {
             $output->writeln('<error>'.$e->getMessage().'</error>');
