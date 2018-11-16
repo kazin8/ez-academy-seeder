@@ -8,21 +8,28 @@ use App\Data\PagesTypes\PageType;
 use App\Data\Themes\Theme;
 use App\Data\Members\Member;
 use App\Data\ThemesPagesTemplates\ThemePageTemplate;
+use App\Helpers\Config;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class AcademySeedingCommand extends Command
 {
-    private $url = 'http://api.academy.ezf.develop/v1/';
-    private $jwt = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJqdUs5US9ZY2NkcGR4OWtWR052YjB4Nkh2dzJOYW1BL3pnZTlIOERaZGNNPSIsImRhdGEiOnsidXNlcklkIjoiMGQ5YzA1OGUtZDdhZC00MjFkLTllNTgtNWU5YzdiYzJlZDRlIn19.B4ZemeTeAh4-sadIygozxiVbUQ3KA2U0Tu2m1-Di3-C4UIWwScs9yd_Ptg230e90vxrGOKPPaLYk8RJO7_Cxog';
-    private $jwtDomain = 'api.academy.ezf.develop';
-    private $userId = '0d9c058e-d7ad-421d-9e58-5e9c7bc2ed4e';
+    /** @var Config */
+    private $config;
+
     /** @var OutputInterface */
     private $output;
 
     protected function configure()
     {
+        $this->config = new Config(
+            getenv('API_URL'),
+            getenv('AUTH_JWT'),
+            getenv('DOMAIN_JWT'),
+            getenv('USER_ID')
+        );
+
         $this->setName('start')
             ->setDescription('This command seed data to server for ez-academy service')
             ->setHelp('This command seed data to server for ez-academy service');
@@ -34,19 +41,19 @@ class AcademySeedingCommand extends Command
 
         $this->output = $output;
 
-        $theme = new Theme($this->url, $this->jwt, $this->jwtDomain);
-        $pageType = new PageType($this->url, $this->jwt, $this->jwtDomain);
-        $themePageTemplate = new ThemePageTemplate($this->url, $this->jwt, $this->jwtDomain);
+        $theme = new Theme($this->config);
+        $pageType = new PageType($this->config);
+        $themePageTemplate = new ThemePageTemplate($this->config);
 
-        $academySingle = new AcademySingle($this->url, $this->jwt, $this->jwtDomain);
-        $academySingle->setUserIdField($this->userId);
+        $academySingle = new AcademySingle($this->config);
+        $academySingle->setUserIdField($this->config->getUserId());
 
-        $academyPackage = new AcademyPackage($this->url, $this->jwt, $this->jwtDomain);
-        $academyPackage->setUserIdField($this->userId);
+        $academyPackage = new AcademyPackage($this->config);
+        $academyPackage->setUserIdField($this->config->getUserId());
 
-        $package = new Package($this->url, $this->jwt, $this->jwtDomain);
+        $package = new Package($this->config);
 
-        $member = new Member($this->url, $this->jwt, $this->jwtDomain);
+        $member = new Member($this->config);
 
         $themes = [];
         $pagesTypes = [];

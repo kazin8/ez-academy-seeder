@@ -1,6 +1,7 @@
 <?php
 namespace App\Data;
 
+use App\Helpers\Config;
 use Faker\Factory;
 use GuzzleHttp\Client;
 use Zend\Stdlib\ArrayUtils;
@@ -24,14 +25,14 @@ class Base implements IBase
 
     protected $faker;
 
-    public function __construct(string $url, string $jwt, string $jwtDomain)
+    public function __construct(Config $config)
     {
-        $this->url = $url;
+        $this->url = $config->getUrl();
         $http = new Client([
             'base_uri' => $this->url
         ]);
         $this->http = $http;
-        $this->setOptions($jwt, $jwtDomain);
+        $this->setOptions($config->getJwt(), $config->getJwtDomain());
         $this->faker = Factory::create();
     }
 
