@@ -97,6 +97,8 @@ class AcademyMenu extends Base
     public function setNameField($nameField): self
     {
         $this->nameField = $nameField;
+
+        return $this;
     }
 
     /**
@@ -118,5 +120,7 @@ class AcademyMenu extends Base
     public function setTypeField($typeField): self
     {
         $this->typeField = $typeField;
+
+        return $this;
     }
 }
