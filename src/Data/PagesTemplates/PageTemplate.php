@@ -1,32 +1,38 @@
 <?php
 
-namespace App\Data\ThemesPagesTemplates;
+namespace App\Data\PagesTemplates;
 
 use App\Data\Base;
 use Zend\Stdlib\ArrayUtils;
 
-class ThemePageTemplate extends Base
+class PageTemplate extends Base
 {
+    protected $type = 'pages-templates';
+
     protected $theme;
     protected $pageType;
-    protected $type = 'themes-pages-templates';
+    protected $academy;
 
     protected $ordField;
     protected $templateIdField;
-    protected $isSingleField;
+    protected $slugField;
 
     protected function getAttributesData() : array
     {
         return [
             'ord' => $this->getOrdField(),
             'template-id' => $this->getTemplateIdField(),
-            'is-single' => $this->getIsSingleField()
+            'slug' => $this->getSlugField()
         ];
     }
 
     protected function getRelationshipsData() : array
     {
         $result = [];
+
+        if ($academy = $this->getAcademy()) {
+            $result = ArrayUtils::merge($result, $academy);
+        }
 
         if ($theme = $this->getTheme()) {
             $result = ArrayUtils::merge($result, $theme);
@@ -82,6 +88,45 @@ class ThemePageTemplate extends Base
     /**
      * @return mixed
      */
+    public function getAcademy()
+    {
+        return $this->academy;
+    }
+
+    /**
+     * @param string $type
+     * @param string $id
+     * @return self
+     */
+    public function setAcademy(string $type, string $id): self
+    {
+        $this->academy = $this->setOneRelation($type, $id);
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSlugField()
+    {
+        return $this->slugField ?? $this->faker->slug(2);
+    }
+
+    /**
+     * @param mixed $slugField
+     * @return self
+     */
+    public function setSlugField($slugField): self
+    {
+        $this->slugField = $slugField;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getOrdField()
     {
         return $this->ordField ?? $this->faker->numberBetween(0, 20);
@@ -116,25 +161,4 @@ class ThemePageTemplate extends Base
 
         return $this;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getIsSingleField()
-    {
-        return (int) ($this->isSingleField ?? $this->faker->boolean);
-    }
-
-    /**
-     * @param mixed $isSingleField
-     * @return self
-     */
-    public function setIsSingleField($isSingleField): self
-    {
-        $this->isSingleField = $isSingleField;
-
-        return $this;
-    }
-
-
 }

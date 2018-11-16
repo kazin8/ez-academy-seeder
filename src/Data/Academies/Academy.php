@@ -3,6 +3,7 @@
 namespace App\Data\Academies;
 
 use App\Data\Base;
+use Zend\Stdlib\ArrayUtils;
 
 class Academy extends Base
 {
@@ -56,16 +57,32 @@ class Academy extends Base
     protected function getRelationshipsData() : array
     {
         $result = [];
-        if ($this->theme) {
-            $result[$this->theme['type']]['data'] = $this->theme;
+
+        if ($theme = $this->getTheme()) {
+            $result = ArrayUtils::merge($result, $theme);
         }
 
         return $result;
     }
 
-    public function setTheme($theme)
+    /**
+     * @return mixed
+     */
+    public function getTheme()
     {
-        $this->theme = $theme;
+        return $this->theme;
+    }
+
+    /**
+     * @param string $type
+     * @param string $id
+     * @return self
+     */
+    public function setTheme(string $type, string $id): self
+    {
+        $this->theme = $this->setOneRelation($type, $id);
+
+        return $this;
     }
 
     protected function getAttributesData() : array

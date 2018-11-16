@@ -7,6 +7,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class Base implements IBase
 {
+    protected $id;
     protected $type;
 
     protected $attributes;
@@ -93,7 +94,7 @@ class Base implements IBase
         return $this->data;
     }
 
-    public function create()
+    public function create() : self
     {
         $json = $this->getJson();
 
@@ -112,13 +113,78 @@ class Base implements IBase
         if (!$id) {
             throw new \Exception($result->getBody()->getContents());
         }
+        $this->setId($id);
 
-        return $id;
+        return $this;
     }
 
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param $id
+     * @return self
+     */
+    public function setId($id) : self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function setOneRelation(string $type, string $id) : array
+    {
+        return [$type =>
+            ['data' => [
+                'type' => $type,
+                'id' => $id
+            ]]
+        ];
+    }
+
+    public function setManyRelation(string $type, array $id)  : array
+    {
+        $data = [];
+        foreach ($id as $element) {
+            $data[] = [
+                'type' => $type,
+                'id' => $element
+            ];
+        }
+
+        return [
+            $type => ['data' => $data]
+        ];
+    }
+
+    /**
+     * Get a random value from an array.
+     *
+     * @param array $array
+     * @param int   $numReq The amount of values to return
+     *
+     * @return mixed
+     */
+    function getRandomIds(array $array, $numReq = 1)
+    {
+        if (!count($array)) {
+            return;
+        }
+        $keys = array_rand($array, $numReq);
+        if ($numReq === 1) {
+            return $array[$keys];
+        }
+        return array_intersect_key($array, array_flip($keys));
     }
 
 }
