@@ -58,10 +58,13 @@ class Order extends Base
     /**
      * @param string $type
      * @param array $ids
+     * @return self
      */
-    public function setCourses(string $type, array $ids): void
+    public function setCourses(string $type, array $ids): self
     {
         $this->courses = $this->setManyRelation($type, $ids);
+
+        return $this;
     }
 
     /**
@@ -75,10 +78,13 @@ class Order extends Base
     /**
      * @param string $type
      * @param array $ids
+     * @return self
      */
-    public function setPackages(string $type, array $ids): void
+    public function setPackages(string $type, array $ids): self
     {
         $this->packages = $this->setManyRelation($type, $ids);
+
+        return $this;
     }
 
     /**

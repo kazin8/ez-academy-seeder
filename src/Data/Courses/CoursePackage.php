@@ -35,10 +35,13 @@ class CoursePackage extends Course
     /**
      * @param string $type
      * @param array $ids
+     * @return self
      */
-    public function setPackages(string $type, array $ids): void
+    public function setPackages(string $type, array $ids): self
     {
         $this->packages = $this->setManyRelation($type, $ids);
+
+        return $this;
     }
 
     /**
@@ -52,10 +55,13 @@ class CoursePackage extends Course
     /**
      * @param string $type
      * @param array $ids
+     * @return self
      */
-    public function setRelatedPackages(string $type, array $ids): void
+    public function setRelatedPackages(string $type, array $ids): self
     {
         $this->relatedPackages = $this->setManyRelation($type, $ids);
+
+        return $this;
     }
 
     /**

@@ -87,7 +87,7 @@ class AcademyMenu extends Base
      */
     public function getNameField()
     {
-        return $this->nameField ?? $this->faker->words();
+        return $this->nameField ?? $this->faker->sentence($this->faker->numberBetween(1, 5));
     }
 
     /**

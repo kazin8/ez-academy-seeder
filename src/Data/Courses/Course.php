@@ -152,10 +152,13 @@ class Course extends Base
     /**
      * @param string $type
      * @param array $ids
+     * @return self
      */
-    public function setRelatedCourses(string $type, array $ids): void
+    public function setRelatedCourses(string $type, array $ids): self
     {
         $this->relatedCourses = $this->setManyRelation($type, $ids);
+
+        return $this;
     }
 
     /**
