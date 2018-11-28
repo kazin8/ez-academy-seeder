@@ -10,5 +10,6 @@ $dotenv->load();
 $application = new Application();
 
 $application->add(new \App\Command\AcademySeedingCommand());
+$application->add(new \App\Command\ActionRegistration());
 
 $application->run();

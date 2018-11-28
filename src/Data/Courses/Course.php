@@ -344,7 +344,7 @@ class Course extends Base
      */
     public function getLevelField()
     {
-        return $this->levelField ?? $this->faker->numberBetween(1, 10);
+        return $this->levelField ?? $this->faker->sentence($this->faker->numberBetween(1, 5));
     }
 
     /**

@@ -8,13 +8,13 @@ use Zend\Stdlib\ArrayUtils;
 class Action extends Base
 {
     const ACTION_TYPE_KLICK_TIPP      = 'KLT';
+    const ACTION_TYPE_MAIL_CHIMP      = 'MCH';
     const ACTION_TYPE_GET_RESPONSE    = 'GRE';
     const ACTION_TYPE_ACTIVE_CAMPAGIN = 'ACA';
     const ACTION_TYPE_QUENTIN         = 'QNT';
+    const ACTION_TYPE_AWEBER          = 'AWE';
     const ACTION_TYPE_WEBINAR         = 'WEB';
     const ACTION_TYPE_EMAIL           = 'EML';
-    const ACTION_TYPE_ADD_TAG         = 'ATG';
-    const ACTION_TYPE_DELETE_TAG      = 'DTG';
 
     const TRIGGER_REGISTRATION = 'REG';
     const TRIGGER_PURCHASE = 'PUR';
@@ -120,10 +120,13 @@ class Action extends Base
     /**
      * @param string $type
      * @param array $ids
+     * @return self
      */
-    public function setCourses(string $type, array $ids): void
+    public function setCourses(string $type, array $ids): self
     {
         $this->courses = $this->setManyRelation($type, $ids);
+
+        return $this;
     }
 
     /**
@@ -137,10 +140,13 @@ class Action extends Base
     /**
      * @param string $type
      * @param array $ids
+     * @return self
      */
-    public function setLessons(string $type, array $ids): void
+    public function setLessons(string $type, array $ids): self
     {
         $this->lessons = $this->setManyRelation($type, $ids);
+
+        return $this;
     }
 
     /**
@@ -154,10 +160,13 @@ class Action extends Base
     /**
      * @param string $type
      * @param array $ids
+     * @return self
      */
-    public function setModules(string $type, array $ids): void
+    public function setModules(string $type, array $ids): self
     {
         $this->modules = $this->setManyRelation($type, $ids);
+
+        return $this;
     }
 
     /**
@@ -167,8 +176,8 @@ class Action extends Base
     {
         return $this->actionTypeField ?? $this->faker->randomElement([
                 self::ACTION_TYPE_ACTIVE_CAMPAGIN,
-                self::ACTION_TYPE_ADD_TAG,
-                self::ACTION_TYPE_DELETE_TAG,
+                self::ACTION_TYPE_AWEBER,
+                self::ACTION_TYPE_MAIL_CHIMP,
                 self::ACTION_TYPE_EMAIL,
                 self::ACTION_TYPE_GET_RESPONSE,
                 self::ACTION_TYPE_KLICK_TIPP,

@@ -56,7 +56,7 @@ class ActionTagAdd extends Base
      */
     public function getNameField()
     {
-        return $this->nameField ?? $this->faker->words();
+        return $this->nameField ?? $this->faker->sentence();
     }
 
     /**

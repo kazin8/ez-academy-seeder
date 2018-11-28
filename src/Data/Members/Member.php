@@ -145,7 +145,7 @@ class Member extends Base
      */
     public function getEmailField()
     {
-        return $this->emailField ?? $this->faker->email;
+        return $this->emailField ?? $this->faker->unique()->email;
     }
 
     /**

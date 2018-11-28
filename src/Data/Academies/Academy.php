@@ -52,6 +52,8 @@ class Academy extends Base
 
     protected $theme;
 
+    protected $user;
+
     protected $type = 'academies';
 
     protected function getRelationshipsData() : array
@@ -60,6 +62,10 @@ class Academy extends Base
 
         if ($theme = $this->getTheme()) {
             $result = ArrayUtils::merge($result, $theme);
+        }
+
+        if ($user = $this->getUser()) {
+            $result = ArrayUtils::merge($result, $user);
         }
 
         return $result;
@@ -85,6 +91,26 @@ class Academy extends Base
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param string $type
+     * @param string $id
+     * @return self
+     */
+    public function setUser(string $type, string $id): self
+    {
+        $this->user = $this->setOneRelation($type, $id);
+
+        return $this;
+    }
+
     protected function getAttributesData() : array
     {
         return [
@@ -99,7 +125,7 @@ class Academy extends Base
             'footer-logo' => $this->getFooterLogoField(),
             'favicon' => $this->getFaviconField(),
             'social-media-label' => $this->getSocialMediaLabelField(),
-            'user-id' => $this->getUserIdField(),
+            //'user-id' => $this->getUserIdField(),
             'smtp-id' => $this->getSmtpIdField(),
             'email-new-user-id' => $this->getEmailNewUserIdField(),
             'email-exist-user-id' => $this->getEmailExistUserIdField(),

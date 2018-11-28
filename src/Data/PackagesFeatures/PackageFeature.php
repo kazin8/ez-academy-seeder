@@ -56,7 +56,7 @@ class PackageFeature extends Base
      */
     public function getNameField()
     {
-        return $this->nameField ?? $this->faker->sentence($this->faker->numberBetween(1, 10));
+        return $this->nameField ?? $this->faker->sentence($this->faker->numberBetween(1, 3));
     }
 
     /**

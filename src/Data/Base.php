@@ -103,7 +103,13 @@ class Base implements IBase
             \GuzzleHttp\RequestOptions::JSON => $json
         ]);
 
+        echo "\n\r\n\r".json_encode($json,1)."\n\r";
+
         $result = $this->http->post($this->type, $payload);
+
+        if ($result->getStatusCode() != 200) {
+            return $this;
+        }
 
         $content = $result->getBody()->getContents();
 
@@ -112,6 +118,7 @@ class Base implements IBase
         $id = $content['data']['id'] ?? null;
 
         if (!$id) {
+            print_r($payload);
             throw new \Exception($result->getBody()->getContents());
         }
         $this->setId($id);

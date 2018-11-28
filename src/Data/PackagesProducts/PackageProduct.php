@@ -58,7 +58,7 @@ class PackageProduct extends Base
      */
     public function getIpnIdField()
     {
-        return $this->ipnIdField ?? $this->faker->slug();
+        return $this->ipnIdField ?? $this->faker->text(20);
     }
 
     /**
